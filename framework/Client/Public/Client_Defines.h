@@ -1,4 +1,7 @@
 #pragma once
+//절대 경로 지켜주삼..
+//문자열 
+#define ABS_PATH "..\..\..\..\..\바탕 화면\Pocket\Resources\"
 
 namespace Client
 {

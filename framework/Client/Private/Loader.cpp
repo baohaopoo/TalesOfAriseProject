@@ -106,6 +106,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoading, TEXT("텍스쳐를 로드중입니다. "));
 
+
 	/* For. Prototype_Component_Texture_Terrain */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds"), 2))))
@@ -130,10 +131,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_Texture_SkyBox"),
 		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/SkyBox/space.dds"), 1))))
 		return E_FAIL;
-
-
-
-	
 
 	///* For. Prototype_Component_Texture_Sky */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_Texture_Sky"),

@@ -7,6 +7,7 @@
 //#ifdef _DEBUG
 //#include "ImGui_Manager.h"
 //#endif // _DEBUG
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
