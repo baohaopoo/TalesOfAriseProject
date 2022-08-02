@@ -69,6 +69,7 @@ HRESULT CLoader::NativeConstruct(LEVEL eLevel)
 
 HRESULT CLoader::Loading_ForLobbyLevel()
 {
+
 	m_isFinished = false;
 	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
 
@@ -97,11 +98,11 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect"),
-		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resource/Textures/Effect/Effect(%d).png"), 29))))
+		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Effect/Effect(%d).png"), 29))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Mesh"),
-		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resource/Textures/Effect/Mesh/Mesh(%d).png"), 369))))
+		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Effect/Mesh/Mesh(%d).png"), 369))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance100"),
@@ -122,7 +123,7 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	_matrix PivotMatrix;
 	PivotMatrix = XMMatrixScaling(10.f, 10.f, 10.f);
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Model_Effect1",
-		CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resource/Model/Effect/", "0.fbx", PivotMatrix))))
+		CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resources/Meshes/Effect/", "0.fbx", PivotMatrix))))
 		return E_FAIL;
 
 
