@@ -113,7 +113,7 @@ HRESULT CMainApp::Render()
 
 	if (m_TimeAcc >= 1.0)
 	{
-		wsprintf(m_szFPS, TEXT("에프피에스 : %d"), m_iNumRender);
+		wsprintf(m_szFPS, TEXT("FPS: %d"), m_iNumRender);
 		m_iNumRender = 0;
 		m_TimeAcc = 0.0;
 	}
