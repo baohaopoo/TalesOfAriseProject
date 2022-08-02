@@ -59,6 +59,11 @@ HRESULT CTexture::SetUp_ShaderResourceView(CShader * pShader, const char * pCons
 	return pShader->Set_ShaderResourceView(pConstantName, m_Textures[iTextureIndex]);	
 }
 
+void * CTexture::Get_ResourceView(_uint iTextureIndex)
+{
+	return m_Textures[iTextureIndex];
+}
+
 CTexture * CTexture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext, const _tchar * pTextureFilePath, _uint iNumTextures)
 {
 	CTexture*	pInstance = new CTexture(pDevice, pDeviceContext);

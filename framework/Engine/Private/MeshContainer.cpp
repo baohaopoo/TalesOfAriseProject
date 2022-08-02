@@ -24,7 +24,7 @@ HRESULT CMeshContainer::NativeConstruct_Prototype(CModel::TYPE eType, aiMesh* pA
 #pragma region VERTEX_BUFFER
 	HRESULT hr = 0;
 
-	if (CModel::TYPE_NONANIM == eType)
+	if (CModel::TYPE_NONANIM == eType && CModel::TYPE_EFFECT == eType)
 	{
 		hr = Create_VertexBuffer_NonAnim(pAIMesh);
 	}

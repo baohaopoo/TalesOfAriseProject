@@ -2,6 +2,115 @@
 
 namespace Engine
 {
+	enum EFFECT_TYPE { EFFECT_TYPE_MESH, EFFECT_TYPE_INSTANCE, EFFECT_TYPE_END };
+	typedef struct EffectDesc
+	{
+		bool			bBillboard = false;
+		unsigned int	iNum = 100;
+		unsigned int	iTexture = 0;
+		unsigned int	iShader = 0;
+		float			fLoop = 0.f;
+		float			fRotationSpe = 0.f;
+		float			fMaxTime = 10.f;
+		float			fPassTime = 0.f;
+		float			fLastTime = 0;
+		float			fScale = 0.05f;
+		float			fScale_Speed = 5.f;
+		float			fSpeed = 1.f;
+		float			fSpeedRand = 1.f;
+
+		float			KeyFram_1_TimeEnd = 2.5f;
+		float			KeyFram_1_RelaxSpeed = 1.f;
+		float			KeyFram_1_Speed = 0.f;
+		float			KeyFram_1_fRotation = 1.f;
+		float			KeyFram_1_fRelaxRotation = 0.f;
+
+		float			KeyFram_2_TimeEnd = 5.f;
+		float			KeyFram_2_RelaxSpeed = 1.f;
+		float			KeyFram_2_Speed = 0.f;
+		float			KeyFram_2_fRotation = 1.f;
+		float			KeyFram_2_fRelaxRotation = 0.f;
+
+		float			KeyFram_3_TimeEnd = 7.5f;
+		float			KeyFram_3_RelaxSpeed = 1.f;
+		float			KeyFram_3_Speed = 0.f;
+		float			KeyFram_3_fRotation = 1.f;
+		float			KeyFram_3_fRelaxRotation = 0.f;
+
+		float			KeyFram_4_TimeEnd = 10.f;
+		float			KeyFram_4_RelaxSpeed = 1.f;
+		float			KeyFram_4_Speed = 0.f;
+		float			KeyFram_4_fRotation = 1.f;
+		float			KeyFram_4_fRelaxRotation = 0.f;
+
+		XMFLOAT4		KeyFram_1_Movement = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		KeyFram_2_Movement = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		KeyFram_3_Movement = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		KeyFram_4_Movement = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+
+		XMFLOAT4		vRotation = XMFLOAT4(-0.5f, -0.5f, -0.5f, 0.f);
+		XMFLOAT4		vMovement = XMFLOAT4(-0.5f, -0.5f, -0.5f, 0.f);
+		XMFLOAT4		vMovementRand = XMFLOAT4(1.f, 1.f, 1.f, 0.f);
+		XMFLOAT4		vPostion = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		vPostionRand = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		vColor1 = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		vColor2 = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+	}EFFECTDESC;
+
+	typedef struct EffectDesc_Mesh
+	{
+		bool			bBillboard = false;
+		unsigned int	iMesh = 0;
+		unsigned int	iTexture = 0;
+		unsigned int	iTexture1 = 0;
+		unsigned int	iTexture2 = 0;
+		unsigned int	iShader = 0;
+		float			MainAlpha = 1.f;
+
+		float			fMaxTime = 10.f;
+		float			fPassTime = 0.f;
+
+		float			KeyFram_0_TimeEnd = 0.f;
+		float			KeyFram_1_TimeEnd = 2.5f;
+		float			KeyFram_2_TimeEnd = 5.f;
+		float			KeyFram_3_TimeEnd = 7.5f;
+		float			KeyFram_4_TimeEnd = 10.f;
+
+		float			KeyFram_0_Alpha = 0.f;
+		float			KeyFram_1_Alpha = 0.f;
+		float			KeyFram_2_Alpha = 0.f;
+		float			KeyFram_3_Alpha = 0.f;
+		float			KeyFram_4_Alpha = 0.f;
+
+		XMFLOAT3		KeyFram_0_Scale = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_1_Scale = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_2_Scale = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_3_Scale = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_4_Scale = XMFLOAT3(1.f, 1.f, 1.f);
+
+		XMFLOAT3		KeyFram_0_Shader = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_1_Shader = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_2_Shader = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_3_Shader = XMFLOAT3(1.f, 1.f, 1.f);
+		XMFLOAT3		KeyFram_4_Shader = XMFLOAT3(1.f, 1.f, 1.f);
+
+		XMFLOAT3		KeyFram_0_Rotation = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_1_Rotation = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_2_Rotation = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_3_Rotation = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_4_Rotation = XMFLOAT3(0.f, 0.f, 0.f);
+
+		XMFLOAT3		KeyFram_0_Position = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_1_Position = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_2_Position = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_3_Position = XMFLOAT3(0.f, 0.f, 0.f);
+		XMFLOAT3		KeyFram_4_Position = XMFLOAT3(0.f, 0.f, 0.f);
+
+		XMFLOAT4		vColor1 = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+		XMFLOAT4		vColor2 = XMFLOAT4(0.f, 0.f, 0.f, 0.f);
+	}EFFECTDESC_MESH;
+
+
 	typedef struct tagKeyFrame
 	{
 		XMFLOAT3			vScale;

@@ -49,6 +49,10 @@ HRESULT CModel::NativeConstruct_Prototype(TYPE eType, const char* pModelFilePath
 	{
 		iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace | aiProcess_Triangulate;
 	}
+	else if (TYPE_EFFECT == m_eType)
+	{
+		iFlag = aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace | aiProcess_Triangulate;
+	}
 	else
 	{
 		iFlag = aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace | aiProcess_Triangulate;
@@ -399,13 +403,20 @@ CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContex
 
 CComponent* CModel::Clone(void* pArg)
 {
-	CModel*	pInstance = new CModel(*this);
-	if (FAILED(pInstance->NativeConstruct(pArg)))
+	if (m_eType == TYPE_EFFECT)
 	{
-		MSG_BOX(L"CModel -> Clone -> pInstance->NativeConstruct");
-		Safe_Release(pInstance);
+		AddRef();
+		return this;
 	}
-	return pInstance;
+	else
+	{
+		CModel*	pInstance = new CModel(*this);
+		if (FAILED(pInstance->NativeConstruct(pArg)))
+		{
+			MSG_BOX(L"CModel -> Clone -> pInstance->NativeConstruct");
+			Safe_Release(pInstance);
+		}
+	}
 }
 
 void CModel::Free()
