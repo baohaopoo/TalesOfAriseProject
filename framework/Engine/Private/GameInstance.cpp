@@ -471,7 +471,7 @@ void CGameInstance::LoadDataFile()
 {
 	_ulong			dwByte = 0;
 /////////////
-	HANDLE			hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Kisara.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE			hFile = CreateFile(L"../Bin/data/EffectIns_Kisara.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -489,7 +489,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Kisara.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_Kisara.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -509,7 +509,7 @@ void CGameInstance::LoadDataFile()
 //////////////////
 
 /////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Rinwell.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns_Rinwell.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -527,7 +527,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Rinwell.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_Rinwell.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -547,7 +547,7 @@ void CGameInstance::LoadDataFile()
 	//////////////////
 
 	/////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Shionne.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns_Shionne.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -565,7 +565,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Shionne.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_Shionne.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -585,7 +585,7 @@ void CGameInstance::LoadDataFile()
 	//////////////////
 
 	/////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Alphen.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns_Alphen.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -603,7 +603,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Alphen.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_Alphen.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -623,7 +623,7 @@ void CGameInstance::LoadDataFile()
 	//////////////////
 
 	/////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_NPC.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns_NPC.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -641,7 +641,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_NPC.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_NPC.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -661,7 +661,7 @@ void CGameInstance::LoadDataFile()
 	//////////////////
 
 	/////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Boss.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns_Boss.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -679,7 +679,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Boss.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_Boss.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -699,7 +699,7 @@ void CGameInstance::LoadDataFile()
 	//////////////////
 
 	/////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Monster.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns_Monster.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -717,7 +717,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Monster.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh_Monster.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -737,7 +737,7 @@ void CGameInstance::LoadDataFile()
 	//////////////////
 
 	/////////////
-	hFile = CreateFile(L"../../Client/Bin/data/EffectIns.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectIns.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
@@ -755,7 +755,7 @@ void CGameInstance::LoadDataFile()
 
 	CloseHandle(hFile);
 
-	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	hFile = CreateFile(L"../Bin/data/EffectMesh.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (0 == hFile)
 		return;
