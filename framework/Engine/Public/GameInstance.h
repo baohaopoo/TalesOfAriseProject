@@ -116,6 +116,34 @@ private:
 #endif // _DEBUG
 
 public:
+	void* Get_EffectData(CHAR_TYPE Char_Type, EFFECT_TYPE Effect_Type, _uint Index );
+	void LoadDataFile();
+private:
+	vector<EFFECTDESC> vInsDesc_Kisara;
+	vector<EFFECTDESC_MESH> vMeshDesc_Kisara;
+
+	vector<EFFECTDESC> vInsDesc_Rinwell;
+	vector<EFFECTDESC_MESH> vMeshDesc_Rinwell;
+
+	vector<EFFECTDESC> vInsDesc_Shionne;
+	vector<EFFECTDESC_MESH> vMeshDesc_Shionne;
+
+	vector<EFFECTDESC> vInsDesc_Alphen;
+	vector<EFFECTDESC_MESH> vMeshDesc_Alphen;
+
+	vector<EFFECTDESC> vInsDesc_NPC;
+	vector<EFFECTDESC_MESH> vMeshDesc_NPC;
+
+	vector<EFFECTDESC> vInsDesc_Boss;
+	vector<EFFECTDESC_MESH> vMeshDesc_Boss;
+
+	vector<EFFECTDESC> vInsDesc_Monster;
+	vector<EFFECTDESC_MESH> vMeshDesc_Monster;
+
+	vector<EFFECTDESC> vInsDesc;
+	vector<EFFECTDESC_MESH> vMeshDesc;
+
+public:
 	static void Release_Engine();
 	virtual void Free() override;
 };

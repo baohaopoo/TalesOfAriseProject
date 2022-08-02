@@ -11,6 +11,7 @@
 #include "Rect_Effect.h"
 #include "Point_Effect.h"
 #include "Effect.h"
+#include "Mesh_Effect.h"
 
 CLoader::CLoader(ID3D11Device* pDeviceOut, ID3D11DeviceContext* pDeviceContextOut)
 	: m_pDevice(pDeviceOut), m_pDeviceContext(pDeviceContextOut)
@@ -85,6 +86,45 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	
 
 	lstrcpy(m_szLoading, TEXT("게임오브젝트를 로드중입니다. "));
+
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Shader_VtxEffect",
+		CShader::Create(m_pDevice, m_pDeviceContext, L"../Bin/ShaderFiles/Shader_VtxEffect.hlsl", VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxInstance"),
+		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"), VTXINSTANCE_DECLARATION::Elements, VTXINSTANCE_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect"),
+		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resource/Textures/Effect/Effect(%d).png"), 29))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect_Mesh"),
+		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resource/Textures/Effect/Mesh/Mesh(%d).png"), 369))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance100"),
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pDeviceContext, 100))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Rect_Effect"),
+		CRect_Effect::Create(m_pDevice, m_pDeviceContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mesh_Effect"),
+		CMesh_Effect::Create(m_pDevice, m_pDeviceContext))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_PointInstance"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pDeviceContext, 50))))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Point_Effect"),
+		CPoint_Effect::Create(m_pDevice, m_pDeviceContext))))
+		return E_FAIL;
+	_matrix PivotMatrix;
+	PivotMatrix = XMMatrixScaling(10.f, 10.f, 10.f);
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Model_Effect1",
+		CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resource/Model/Effect/", "0.fbx", PivotMatrix))))
+		return E_FAIL;
+
 
 	
 

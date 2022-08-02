@@ -1,5 +1,5 @@
-#include "Shader_Defines.hlsli"
 
+#include "Shader_Defines.hlsli"
 cbuffer Matrices
 {
 	float4x4		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
@@ -12,27 +12,42 @@ cbuffer Camera
 
 texture2D			g_DiffuseTexture;
 
+float4				g_Color1;
+float4				g_Color2;
+float				g_Alpha;
+
+//////////////////////
+struct VS_IN
+{
+	float3		vPosition : POSITION;
+	float2		vTexUV : TEXCOORD0;
+
+	float4		vRight : TEXCOORD1;
+	float4		vUp : TEXCOORD2;
+	float4		vLook : TEXCOORD3;
+	float4		vTranslation : TEXCOORD4;
+
+};
+////////////////////////
+struct VS_OUT
+{
+	float4		vPosition : SV_POSITION;
+	float2		vTexUV : TEXCOORD;
+
+};
+struct VS_OUT_POINT
+{
+	float4		vPosition : POSITION;
+	float2		vPSize : PSIZE;
+
+};
+/////////////////////////
 sampler DefaultSampler = sampler_state {
 	filter = min_mag_mip_linear;
 	AddressU = wrap;
 	AddressV = wrap;
 };
 
-struct VS_IN
-{
-	float3		vPosition : POSITION;
-	float2		vTexUV : TEXCOORD0;
-	float4		vRight : TEXCOORD1;
-	float4		vUp : TEXCOORD2;
-	float4		vLook : TEXCOORD3;
-	float4		vTranslation : TEXCOORD4;
-};
-
-struct VS_OUT
-{
-	float4		vPosition : SV_POSITION;
-	float2		vTexUV : TEXCOORD;
-};
 
 VS_OUT VS_MAIN_RECT(VS_IN In)
 {
@@ -53,12 +68,6 @@ VS_OUT VS_MAIN_RECT(VS_IN In)
 
 	return Out;
 }
-
-struct VS_OUT_POINT
-{
-	float4		vPosition : POSITION;
-	float2		vPSize : PSIZE;
-};
 
 VS_OUT_POINT VS_MAIN_POINT(VS_IN In)
 {
@@ -85,6 +94,7 @@ struct GS_OUT
 {
 	float4		vPosition : SV_POSITION;
 	float2		vTexUV : TEXCOORD0;
+
 };
 
 [maxvertexcount(6)]
@@ -134,6 +144,7 @@ struct PS_IN
 {
 	float4		vPosition : SV_POSITION;
 	float2		vTexUV : TEXCOORD0;
+
 };
 
 struct PS_OUT
@@ -141,34 +152,64 @@ struct PS_OUT
 	vector			vColor : SV_TARGET0;
 };
 
-PS_OUT PS_MAIN_RECT(PS_IN In)
+PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT			Out;
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (Out.vColor.a == 0.0f)
+	if (Out.vColor.a < 0.1f)
 		discard;
 
 	return Out;
 }
-
-PS_OUT PS_MAIN_POINT(PS_IN In)
+PS_OUT PS_BLACKCUT(PS_IN In)
 {
 	PS_OUT			Out;
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor.r = 1.f;
-	Out.vColor.gb = 0.f;
+	if (Out.vColor.r < 0.1f)
+		discard;
+	else
+	{
+		float a = Out.vColor.a;
+		Out.vColor = (Out.vColor.r*g_Color1) + ((1.f - Out.vColor.r) * g_Color2);
+	}
 
-	if (Out.vColor.a == 0.0f)
+
+	return Out;
+}
+
+PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
+{
+	PS_OUT			Out;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vColor.a < g_Alpha)
 		discard;
 
 	return Out;
 }
 
+PS_OUT PS_BLACKCUT_DISSOLVE(PS_IN In)
+{
+	PS_OUT			Out;
 
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vColor.r < g_Alpha)
+		discard;
+	else
+	{
+		float a = Out.vColor.a;
+		Out.vColor = (Out.vColor.r*g_Color1) + ((1.f - Out.vColor.r) * g_Color2);
+	}
+
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -180,8 +221,40 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN_RECT();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_RECT();
+		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+	pass BlackCutRect
+	{
+		SetRasterizerState(RS_Default);
+		SetDepthStencilState(DSS_Default, 0);
+		SetBlendState(BS_NonBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+
+		VertexShader = compile vs_5_0 VS_MAIN_RECT();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BLACKCUT();
+	}
+	pass Rect_dissolve
+	{
+		SetRasterizerState(RS_Default);
+		SetDepthStencilState(DSS_Default, 0);
+		SetBlendState(BS_NonBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+
+		VertexShader = compile vs_5_0 VS_MAIN_RECT();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
+	}
+	pass BlackCutRect_dissolve
+	{
+		SetRasterizerState(RS_Default);
+		SetDepthStencilState(DSS_Default, 0);
+		SetBlendState(BS_NonBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+
+		VertexShader = compile vs_5_0 VS_MAIN_RECT();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_BLACKCUT_DISSOLVE();
+	}
+
+
 
 	pass Point
 	{
@@ -191,7 +264,9 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN_POINT();
 		GeometryShader = compile gs_5_0 GS_MAIN_POINT();
-		PixelShader = compile ps_5_0 PS_MAIN_POINT();
+		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
 }
+
+

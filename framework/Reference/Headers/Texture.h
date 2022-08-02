@@ -17,7 +17,7 @@ public:
 
 public:
 	HRESULT SetUp_ShaderResourceView(class CShader* pShader, const char* pConstantName, _uint iTextureIndex);
-
+	void* Get_ResourceView(_uint iTextureIndex);
 private:	
 	vector<ID3D11ShaderResourceView*>				m_Textures;
 	typedef vector<ID3D11ShaderResourceView*>		TEXTURES;

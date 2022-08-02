@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "VIBuffer_Rect_Instance.h"
 
 BEGIN(Engine)
 class CShader;
@@ -26,15 +27,28 @@ public:
 	virtual void LateTick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-private:	
-	CRenderer*						m_pRendererCom = nullptr;
-	CShader*						m_pShaderCom = nullptr;	
-	CTexture*						m_pTextureCom = nullptr;
-	CVIBuffer_Rect_Instance*		m_pVIBufferCom = nullptr;
+	HRESULT BufferSet();
+	void	Reset_PassTime() { m_PassTime = m_EffectDesc->fPassTime; }
+
+	EFFECTDESC*	Get_CreateDesc() { return m_EffectDesc; }
+	_bool		Get_Finish() { return m_bFinish; }
+
+	void Set_Pos(_float4 Pos) { m_EffectDesc->vPostion = Pos; }
 
 private:
-	HRESULT SetUp_Components();
-	HRESULT SetUp_ConstantTable();	
+	CRenderer*					m_pRendererCom = nullptr;
+	CShader*					m_pShaderCom = nullptr;
+	CTexture*					m_pTextureCom = nullptr;
+	CVIBuffer_Rect_Instance*	m_pVIBufferCom = nullptr;
+
+	_bool						m_bFinish = false;
+
+	_float						m_fMaxTime = 10.f;
+	_float						m_PassTime = 0;
+	EFFECTDESC*					m_EffectDesc = nullptr;
+private:
+	HRESULT SetUp_Components(void* pArg);
+	HRESULT SetUp_ConstantTable();
 
 public:
 	static CRect_Effect* Create(ID3D11Device* pDeviceOut, ID3D11DeviceContext* pDeviceContextOut);

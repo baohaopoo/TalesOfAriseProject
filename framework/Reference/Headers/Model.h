@@ -9,7 +9,7 @@ BEGIN(Engine)
 class ENGINE_DLL CModel final : public CComponent
 {
 public:
-	enum TYPE { TYPE_NONANIM, TYPE_ANIM, TYPE_END };
+	enum TYPE { TYPE_NONANIM, TYPE_ANIM,TYPE_EFFECT, TYPE_END };
 public:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext);
 	CModel(const CModel& rhs);

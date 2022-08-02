@@ -24,56 +24,48 @@ HRESULT CRect_Effect::NativeConstruct_Prototype()
 
 HRESULT CRect_Effect::NativeConstruct(void * pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	ZeroMemory(&TransformDesc, sizeof(CTransform::TRANSFORMDESC));
 
-	TransformDesc.SpeedPerSec = 5.0f;
-	TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
-	
-	if (FAILED(__super::NativeConstruct(pArg, &TransformDesc)))
+
+	if (FAILED(__super::NativeConstruct(pArg)))
 		return E_FAIL;
 
-	if (FAILED(SetUp_Components()))
-		return E_FAIL;	
+	if (FAILED(SetUp_Components(pArg)))
+		return E_FAIL;
 
-	
-
-
-
+	if (FAILED(BufferSet()))
+		return E_FAIL;
+	m_PassTime = m_EffectDesc->fPassTime;
 	return S_OK;
 }
 
 void CRect_Effect::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
-	CTransform*		pTransform = (CTransform*)pGameInstance->Get_Component(LEVEL_TUTORIAL, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
-	if (nullptr == pTransform)
-		return;
-
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, pTransform->Get_State(CTransform::STATE_POSITION));
-
-
-
-	RELEASE_INSTANCE(CGameInstance);
-
-	m_pVIBufferCom->Update(TimeDelta);
-
+	m_PassTime -= TimeDelta;
 }
 
 void CRect_Effect::LateTick(_double TimeDelta)
 {
 	__super::LateTick(TimeDelta);
 
-	if (nullptr != m_pRendererCom)
+	if (nullptr != m_pRendererCom&& m_PassTime <= 0)
+	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::GROUP_NONLIGHT, this);
+		if (m_pVIBufferCom->Get_Billboard())
+		{
+			CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+			m_bFinish = m_pVIBufferCom->Update(TimeDelta, XMMatrixInverse(nullptr, pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW)));
+			RELEASE_INSTANCE(CGameInstance);
+		}
+		else
+			m_bFinish = m_pVIBufferCom->Update(TimeDelta);
+	}
+
 }
 
 HRESULT CRect_Effect::Render()
 {
-	if (nullptr == m_pShaderCom || 
+	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
@@ -83,14 +75,22 @@ HRESULT CRect_Effect::Render()
 	if (FAILED(SetUp_ConstantTable()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(m_EffectDesc->iShader);
 
 	m_pVIBufferCom->Render();
+
 
 	return S_OK;
 }
 
-HRESULT CRect_Effect::SetUp_Components()
+HRESULT CRect_Effect::BufferSet()
+{
+	m_EffectDesc = m_pVIBufferCom->Get_EffectDesc();
+	m_pVIBufferCom->Restart();
+	return S_OK;
+}
+
+HRESULT CRect_Effect::SetUp_Components(void* pArg)
 {
 	/* For.Com_Renderer */
 	if (FAILED(__super::SetUp_Components(TEXT("Com_Renderer"), LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), (CComponent**)&m_pRendererCom)))
@@ -101,34 +101,44 @@ HRESULT CRect_Effect::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::SetUp_Components(TEXT("Com_Texture"), LEVEL_TUTORIAL, TEXT("Prototype_Component_Texture_Snow"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::SetUp_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 	
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::SetUp_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance"), (CComponent**)&m_pVIBufferCom)))
+	if (FAILED(__super::SetUp_Components(TEXT("Com_VIBuffer"), LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance100"), (CComponent**)&m_pVIBufferCom, pArg)))
 		return E_FAIL;
-	
+	m_EffectDesc = m_pVIBufferCom->Get_EffectDesc();
+
+
 	return S_OK;
 }
 
 HRESULT CRect_Effect::SetUp_ConstantTable()
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
-
+	
 	if (FAILED(m_pTransformCom->Bind_WorldMatrixOnShader(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	
+
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &pGameInstance->Get_TransformFloat4x4_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-		return E_FAIL;	
-
-	if (FAILED(m_pTextureCom->SetUp_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_Color1", &m_EffectDesc->vColor1, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_Color2", &m_EffectDesc->vColor2, sizeof(_float4))))
+		return E_FAIL;
+	_float m_f = m_pVIBufferCom->Get_Time() / m_pVIBufferCom->Get_MaxTime();
+	if (FAILED(m_pShaderCom->Set_RawValue("g_Alpha", &m_f, sizeof(_float))))
 		return E_FAIL;
 
 
-	
+	if (FAILED(m_pTextureCom->SetUp_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_EffectDesc->iTexture)))
+		return E_FAIL;
+
+
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
@@ -162,8 +172,8 @@ CGameObject * CRect_Effect::Clone(void * pArg)
 
 void CRect_Effect::Free()
 {
-	__super::Free();	
-	
+	__super::Free();
+
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pVIBufferCom);

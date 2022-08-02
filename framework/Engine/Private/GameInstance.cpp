@@ -402,6 +402,379 @@ _bool CGameInstance::Get_WireFrame()
 }
 #endif // _DEBUG
 
+void* CGameInstance::Get_EffectData(CHAR_TYPE Char_Type, EFFECT_TYPE Effect_Type, _uint Index)
+{
+	if (Effect_Type == EFFECT_TYPE_INSTANCE)
+	{
+		switch (Char_Type)
+		{
+		case Engine::CHAR_TYPE_KISARA:
+			return &vInsDesc_Kisara[Index];
+			break;
+		case Engine::CHAR_TYPE_RINWELL:
+			return &vInsDesc_Rinwell[Index];
+			break;
+		case Engine::CHAR_TYPE_SHIONNE:
+			return &vInsDesc_Shionne[Index];
+			break;
+		case Engine::CHAR_TYPE_ALPHEN:
+			return &vInsDesc_Alphen[Index];
+			break;
+		case Engine::CHAR_TYPE_NPC:
+			return &vInsDesc_NPC[Index];
+			break;
+		case Engine::CHAR_TYPE_BOSS:
+			return &vInsDesc_Boss[Index];
+			break;
+		case Engine::CHAR_TYPE_MONSTER:
+			return &vInsDesc_Monster[Index];
+			break;
+		case Engine::CHAR_TYPE_BASIC:
+			return &vInsDesc[Index];
+			break;
+		}
+	}
+	else if(Effect_Type == EFFECT_TYPE_MESH)
+	{
+		switch (Char_Type)
+		{
+		case Engine::CHAR_TYPE_KISARA:
+			return &vMeshDesc_Kisara[Index];
+			break;
+		case Engine::CHAR_TYPE_RINWELL:
+			return &vMeshDesc_Rinwell[Index];
+			break;
+		case Engine::CHAR_TYPE_SHIONNE:
+			return &vMeshDesc_Shionne[Index];
+			break;
+		case Engine::CHAR_TYPE_ALPHEN:
+			return &vMeshDesc_Alphen[Index];
+			break;
+		case Engine::CHAR_TYPE_NPC:
+			return &vMeshDesc_NPC[Index];
+			break;
+		case Engine::CHAR_TYPE_BOSS:
+			return &vMeshDesc_Boss[Index];
+			break;
+		case Engine::CHAR_TYPE_MONSTER:
+			return &vMeshDesc_Monster[Index];
+			break;
+		case Engine::CHAR_TYPE_BASIC:
+			return &vMeshDesc[Index];
+			break;
+		}
+	}
+
+}
+
+void CGameInstance::LoadDataFile()
+{
+	_ulong			dwByte = 0;
+/////////////
+	HANDLE			hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Kisara.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_Kisara.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Kisara.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_Kisara.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+//////////////////
+
+/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Rinwell.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_Rinwell.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Rinwell.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_Rinwell.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+
+	/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Shionne.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_Shionne.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Shionne.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_Shionne.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+
+	/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Alphen.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_Alphen.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Alphen.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_Alphen.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+
+	/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_NPC.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_NPC.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_NPC.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_NPC.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+
+	/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Boss.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_Boss.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Boss.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_Boss.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+
+	/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns_Monster.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc_Boss.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh_Monster.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc_Boss.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+
+	/////////////
+	hFile = CreateFile(L"../../Client/Bin/data/EffectIns.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vInsDesc.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+
+	hFile = CreateFile(L"../../Client/Bin/data/EffectMesh.dat", GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (0 == hFile)
+		return;
+
+	while (true)
+	{
+		EFFECTDESC_MESH vTemp;
+		ReadFile(hFile, &vTemp, sizeof(EFFECTDESC_MESH), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vMeshDesc.push_back(vTemp);
+	}
+
+	CloseHandle(hFile);
+	//////////////////
+}
+
 void CGameInstance::Release_Engine()
 {
 	CGameInstance::GetInstance()->DestroyInstance();
