@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Rect_Effect.h"
 #include "GameInstance.h"
+#include "VIBuffer_Rect_Instance.h"
 
 CRect_Effect::CRect_Effect(ID3D11Device* pDeviceOut, ID3D11DeviceContext* pDeviceContextOut)
 	: CGameObject(pDeviceOut, pDeviceContextOut)
