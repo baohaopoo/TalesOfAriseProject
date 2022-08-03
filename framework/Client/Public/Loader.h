@@ -38,6 +38,24 @@ public:
 	HRESULT Loading_ForBoss2();
 
 private:
+	// Lobby 레벨 로딩
+	HRESULT Loading_Lobby_Texture();
+	HRESULT Loading_Lobby_Object();
+	HRESULT Loading_Lobby_Shader();
+	HRESULT Loading_Lobby_Model();
+	HRESULT Loading_Lobby_Component();
+
+private:
+	// GamePlay 레벨 로딩
+	HRESULT Loading_GamePlay_Texture();
+	HRESULT Loading_GamePlay_Object();
+	HRESULT Loading_GamePlay_Shader();
+	HRESULT Loading_GamePlay_Model();
+	HRESULT Loading_GamePlay_Component();
+	HRESULT Loading_GamePlay_Collider();
+
+
+private:
 	LEVEL			m_eLevel = LEVEL_END;
 	_bool			m_isFinished = false;
 	_tchar			m_szLoading[MAX_PATH] = TEXT("");

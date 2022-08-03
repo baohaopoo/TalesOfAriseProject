@@ -11,6 +11,9 @@ CChannel::CChannel(const CChannel& rhs)
 	, m_iCurrentKeyFrame(rhs.m_iCurrentKeyFrame)
 	, m_TransformationMatrix(rhs.m_TransformationMatrix)
 	, m_isCloned(true)
+
+	// binary
+	, m_RelatedNodeIndex(rhs.m_RelatedNodeIndex)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }
@@ -187,4 +190,108 @@ void CChannel::Free()
 		}
 	}
 	Safe_Release(m_pHierarchyNode);
+}
+
+HRESULT CChannel::Save_ChannelInfo(HANDLE & hFile)
+{
+	if (nullptr == hFile)
+		return E_FAIL;
+
+	DWORD		dwByte = 0;
+	DWORD		dwStrByte = 0;
+
+	// 채널 이름(m_szName) 저장
+	// 문자열의 사이즈 구하기
+	dwStrByte = strlen(m_szName) + 1;	// nullptr 을 위해 1개 추가
+
+										// 해당 문자열의 사이즈 저장
+	WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	// 문자열의 메모리를 문자열의 사이즈만큼 저장
+	WriteFile(hFile, m_szName, dwStrByte, &dwByte, nullptr);
+
+
+
+	// 키프레임 갯수 저장
+	WriteFile(hFile, &m_iNumKeyFrames, sizeof(_uint), &dwByte, nullptr);
+
+	// 키프레임의 사이즈 저장
+	dwStrByte = m_KeyFrames.size();
+	WriteFile(hFile, &dwStrByte, sizeof(_uint), &dwByte, nullptr);
+
+	// 키프레임 갯수 저장
+	WriteFile(hFile, &m_RelatedNodeIndex, sizeof(_uint), &dwByte, nullptr);
+
+
+	// 키 프레임 정보 생성
+	KEYFRAME* KeyFrames = nullptr;
+	KeyFrames = new KEYFRAME[m_KeyFrames.size()];
+
+	for (int i = 0; i<m_KeyFrames.size(); ++i) {
+		KeyFrames[i] = *m_KeyFrames[i];
+	}
+
+	// 키 프레임 정보 저장
+	WriteFile(hFile, KeyFrames, sizeof(KEYFRAME) * m_KeyFrames.size(), &dwByte, nullptr);
+
+	// 생성한 키 프레임 정보 할당 해제
+	Safe_Delete_Array(KeyFrames);
+
+
+	// 9871 저장
+	dwStrByte = 9871;
+	WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	return S_OK;
+}
+
+CChannel * CChannel::Create(HANDLE & hFile)
+{
+	CChannel*	pInstance = new CChannel();
+
+	if (FAILED(pInstance->NativeConstruct_Prototype(hFile)))
+	{
+		MSG_BOX(TEXT("Failed to Created CChannel"));
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+HRESULT CChannel::NativeConstruct_Prototype(HANDLE & hFile)
+{
+	if (nullptr == hFile)
+		return E_FAIL;
+
+	DWORD		dwByte = 0;
+	DWORD		dwStrByte = 0;
+
+	// 채널 이름(m_szName) 불러오기
+
+	// 해당 문자열의 사이즈 불러오기
+	ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	// 문자열의 메모리를 문자열의 사이즈만큼 불러오기
+	ReadFile(hFile, m_szName, dwStrByte, &dwByte, nullptr);
+
+	// 키프레임 갯수 읽어오기
+	ReadFile(hFile, &m_iNumKeyFrames, sizeof(_uint), &dwByte, nullptr);
+
+	// 키프레임의 사이즈 읽어오기
+	int iKeyFrameCnt = 0;
+	ReadFile(hFile, &iKeyFrameCnt, sizeof(_uint), &dwByte, nullptr);
+
+	// 키프레임 갯수 저장
+	ReadFile(hFile, &m_RelatedNodeIndex, sizeof(_uint), &dwByte, nullptr);
+
+	KEYFRAME* pKeyFrames = new KEYFRAME[iKeyFrameCnt];
+	ReadFile(hFile, pKeyFrames, sizeof(KEYFRAME) * iKeyFrameCnt, &dwByte, nullptr);
+
+	for (int i = 0; i < iKeyFrameCnt; ++i)
+		m_KeyFrames.push_back(&pKeyFrames[i]);
+
+	// dwStrByte == 9871
+	ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	return S_OK;
 }

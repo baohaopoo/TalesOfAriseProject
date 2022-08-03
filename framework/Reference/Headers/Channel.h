@@ -18,11 +18,20 @@ public:
 	_uint Get_CurrentKeyFrameIndex();
 	KEYFRAME* Get_KeyFrame(_uint iKeyFrame);
 	CHierarchyNode* Get_HierarchyNode();
+
+public:
+	// binary
+	_uint Get_KeyFrames(void) { return m_iNumKeyFrames; }
+
 public:
 	void SetUp_HierarchyNodePtr(class CHierarchyNode* pNode);
 	void Set_CurrentKeyFrame(_uint iKeyFrame);
 private:
 	HRESULT Ready_KeyFrames(aiNodeAnim* pAIChannel);
+
+public:
+	char* Get_Name(void) { return m_szName; }
+
 private:
 	char m_szName[MAX_PATH] = "";
 private:
@@ -40,6 +49,21 @@ public:
 	static CChannel* Create(aiNodeAnim* pAIChannel);
 	CChannel* Clone();
 	virtual void Free() override;
+
+
+
+	// binary
+public:
+	HRESULT Save_ChannelInfo(HANDLE& hFile);
+	static CChannel* Create(HANDLE& hFile);
+	HRESULT NativeConstruct_Prototype(HANDLE& hFile);
+
+public:
+	_uint Get_RelatedIndex(void) { return m_RelatedNodeIndex; }
+	void Set_RelatedIndex(_uint iIndex) { m_RelatedNodeIndex = iIndex; }
+
+private:
+	_uint							m_RelatedNodeIndex = 0;
 };
 
 END

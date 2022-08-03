@@ -26,6 +26,15 @@ public:
 	static CTexture* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, const _tchar* pTextureFilePath, _uint iNumTextures = 1); 
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
+
+
+
+	// binary
+public:
+	_tchar* Get_TextureFilePath(void) { return m_szTextureFilePath; }
+
+private:
+	_tchar* m_szTextureFilePath = nullptr;
 };
 
 END

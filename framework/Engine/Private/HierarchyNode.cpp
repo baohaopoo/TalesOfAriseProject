@@ -97,3 +97,70 @@ CHierarchyNode* CHierarchyNode::Create(aiNode* pAINode, CHierarchyNode* pParent,
 void CHierarchyNode::Free()
 {
 }
+
+HRESULT CHierarchyNode::SaveDatInfo(HANDLE & hFile)
+{
+	if (nullptr == hFile)
+		return E_FAIL;
+
+	DWORD		dwByte = 0;
+	DWORD		dwStrByte = 0;
+
+	// 이름(m_szName) 저장
+	// 문자열의 사이즈 구하기
+	dwStrByte = strlen(m_szName) + 1;	// nullptr 을 위해 1개 추가
+
+										// 해당 문자열의 사이즈 저장
+	WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	// 문자열의 메모리를 문자열의 사이즈만큼 저장
+	WriteFile(hFile, m_szName, dwStrByte, &dwByte, nullptr);
+
+
+
+	// 깊이 정보 저장
+	WriteFile(hFile, &m_iDepth, sizeof(_uint), &dwByte, nullptr);
+
+	// 부모 노드 정보 저장
+	WriteFile(hFile, &m_iHierarchyNumber, sizeof(_uint), &dwByte, nullptr);
+
+	// 행렬 정보 저장
+	WriteFile(hFile, &m_TransformationMatrix, sizeof(_float4x4), &dwByte, nullptr);
+
+	return S_OK;
+}
+
+CHierarchyNode * CHierarchyNode::Create(const char * szName, _matrix TransformationMatrixTP, _uint iDepth)
+{
+	CHierarchyNode*	pInstance = new CHierarchyNode();
+
+	if (FAILED(pInstance->NativeConstruct(szName, TransformationMatrixTP, iDepth)))
+	{
+		MSG_BOX(TEXT("Failed to Created CHierarchyNode"));
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CHierarchyNode * CHierarchyNode::Clone(void * pArg)
+{
+	CHierarchyNode*	pInstance = new CHierarchyNode(*this);
+
+	return pInstance;
+}
+
+HRESULT CHierarchyNode::NativeConstruct(const char * szName, _matrix TransformationMatrixTP, _uint iDepth)
+{
+	// 이름 저장
+	strcpy_s(m_szName, szName);
+
+	// 이동행렬의 역행렬 값 저장
+	XMStoreFloat4x4(&m_TransformationMatrix, TransformationMatrixTP);
+
+	// 깊이 값 저장
+	m_iDepth = iDepth;
+
+	// 부모 노드의 정보는 외부에서 따로 처리한다.
+	return S_OK;
+}

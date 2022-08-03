@@ -73,6 +73,34 @@ public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, TYPE eType, const char* pModelFilePath, const char* pModelFileName, _fmatrix PivotMatrix = XMMatrixIdentity());
 	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
+
+
+	// Binary
+public:
+	typedef struct tagMaterialTextureInfo {
+		int iMaterialIndex = 0;
+		int iAI_TEXTURE_TYPE = 0;
+		char strFilePath[MAX_PATH];
+	}MATERIALTEXTURE;
+
+private:
+	HRESULT Save_FBX(HANDLE& hFile);
+	HRESULT Load_FBX(HANDLE& hFile);
+
+private:
+	HRESULT Load_VertexBuffer(HANDLE& hFile);
+	HRESULT Load_Animation(HANDLE& hFile);
+
+private:
+	HRESULT Clone_Dat_HierarchyNodes();
+	HRESULT Clone_Dat_MeshContainers();
+	HRESULT Clone_Dat_Animations();
+
+private:
+	const vector<class CHierarchyNode*>*			m_pClonedHierarchyNodes;
+
+	static _uint m_iIdNum;
+
 };
 
 END

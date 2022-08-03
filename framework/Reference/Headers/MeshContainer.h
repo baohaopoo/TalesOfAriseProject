@@ -36,6 +36,32 @@ public:
 	static CMeshContainer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, CModel::TYPE eType, aiMesh* pAIMesh, _float4x4 PivotMatrix, vector<CHierarchyNode*> HierarchyNodes);
 	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
+
+
+
+
+	//binary
+public:
+	HRESULT Save_VertexBuffer_NoAnim(HANDLE& hFile, aiMesh* pAIMesh);
+	HRESULT Save_VertexBuffer_Anim(HANDLE& hFile, aiMesh* pAIMesh, vector<CHierarchyNode*> HierarchyNodes);
+	HRESULT Save_IndexBuffer(HANDLE& hFile, aiMesh* pAIMesh);
+
+public:
+	static CMeshContainer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext,
+		CModel::TYPE eType, HANDLE& hFile, _float4x4 PivotMatrix, vector<class CHierarchyNode*> HierarchyNodes);
+	HRESULT NativeConstruct_Prototype(CModel::TYPE eType, HANDLE& hFile, _float4x4 PivotMatrix, vector<CHierarchyNode*>	HierarchyNodes);
+
+public:
+	virtual CComponent* Clone_Dat(void* pArg);
+	HRESULT NativeConstruct_Dat(void* pArg);
+
+public:
+	HRESULT Load_VertexBuffer_NonAnim(HANDLE& hFile);
+	HRESULT Load_VertexBuffer_Anim(HANDLE& hFile, vector<CHierarchyNode*>	HierarchyNodes);
+	HRESULT Load_IndexBuffer(HANDLE& hFile);
+
+private:
+	vector<int>		m_vHierarchyIndexes;
 };
 
 END

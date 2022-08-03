@@ -4,7 +4,9 @@
 CTexture::CTexture(ID3D11Device * pDevice, ID3D11DeviceContext * pDeviceContext)
 	: CComponent(pDevice, pDeviceContext)
 {
-
+	// binary
+	m_szTextureFilePath = new TCHAR[MAX_PATH];
+	ZeroMemory(m_szTextureFilePath, sizeof(TCHAR) * MAX_PATH);
 }
 
 CTexture::CTexture(const CTexture & rhs)
@@ -42,6 +44,10 @@ HRESULT CTexture::NativeConstruct_Prototype(const _tchar * pTextureFilePath, _ui
 
 		m_Textures.push_back(pSRV);		
 	}
+
+	// binary
+	// texture 경로 저장
+	wsprintf(m_szTextureFilePath, szTextureFilePath);
 
 	return S_OK;
 }
@@ -99,4 +105,8 @@ void CTexture::Free()
 
 	m_Textures.clear();
 
+
+	// binary
+	// texture 경로 삭제
+	Safe_Delete_Array(m_szTextureFilePath);
 }

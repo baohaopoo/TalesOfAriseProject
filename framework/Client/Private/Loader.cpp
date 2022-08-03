@@ -69,33 +69,93 @@ HRESULT CLoader::NativeConstruct(LEVEL eLevel)
 
 HRESULT CLoader::Loading_ForLobbyLevel()
 {
-
 	m_isFinished = false;
-	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
 
-	Safe_AddRef(pGameInstance);
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	lstrcpy(m_szLoading, TEXT("텍스쳐를 로드중입니다. "));
-
-	
-
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Startlight"),
-	//	CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Button/BattleStart.png"), 1))))
-	//	return E_FAIL;
-	lstrcpy(m_szLoading, TEXT("셰이더를 로드중입니다. "));
-
-	
-
-	lstrcpy(m_szLoading, TEXT("게임오브젝트를 로드중입니다. "));
-
-
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Shader_VtxEffect",
-		CShader::Create(m_pDevice, m_pDeviceContext, L"../Bin/ShaderFiles/Shader_VtxEffect.hlsl", VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
+	lstrcpy(m_szLoading, TEXT("Lobby 텍스쳐를 로드중입니다."));
+	if (FAILED(Loading_Lobby_Texture()))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxInstance"),
-		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"), VTXINSTANCE_DECLARATION::Elements, VTXINSTANCE_DECLARATION::iNumElements))))
+	lstrcpy(m_szLoading, TEXT("Lobby 게임오브젝트를 로드중입니다."));
+	if (FAILED(Loading_Lobby_Object()))
 		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("Lobby 셰이더를 로드중입니다. "));
+	if (FAILED(Loading_Lobby_Shader()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("Lobby 모델을 로드중입니다. "));
+	if (FAILED(Loading_Lobby_Model()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("Lobby 컴포넌트를 로드중입니다. "));
+	if (FAILED(Loading_Lobby_Component()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("Lobby 로딩이 완료되었습니다.. "));
+	m_isFinished = true;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForGamePlayLevel()
+{
+	m_isFinished = false;
+
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 텍스쳐를 로드중입니다."));
+	if (FAILED(Loading_GamePlay_Texture()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 게임오브젝트를 로드중입니다."));
+	if (FAILED(Loading_GamePlay_Object()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 셰이더를 로드중입니다. "));
+	if (FAILED(Loading_GamePlay_Shader()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 모델을 로드중입니다. "));
+	if (FAILED(Loading_GamePlay_Model()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 컴포넌트를 로드중입니다. "));
+	if (FAILED(Loading_GamePlay_Component()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 콜라이더 생성중입니다. "));
+	if (FAILED(Loading_GamePlay_Collider()))
+		return E_FAIL;
+
+	lstrcpy(m_szLoading, TEXT("GamePlay 로딩이 완료되었습니다.. "));
+	m_isFinished = true;
+
+
+	lstrcpy(m_szLoading, TEXT("로딩이 완료되었습니다.. "));
+	m_isFinished = true;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForBoss1()
+{
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForBoss2()
+{
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Lobby_Texture()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Effect"),
 		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Effect/Effect(%d).png"), 29))))
@@ -105,48 +165,87 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Effect/Mesh/Mesh(%d).png"), 369))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance100"),
-		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pDeviceContext, 100))))
-		return E_FAIL;
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Lobby_Object()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	// Effect 관련
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Rect_Effect"),
 		CRect_Effect::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mesh_Effect"),
 		CMesh_Effect::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_PointInstance"),
-		CVIBuffer_Point_Instance::Create(m_pDevice, m_pDeviceContext, 50))))
-		return E_FAIL;
+
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Point_Effect"),
 		CPoint_Effect::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
-	_matrix PivotMatrix;
-	PivotMatrix = XMMatrixScaling(10.f, 10.f, 10.f);
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Model_Effect1",
-		CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resources/Meshes/Effect/", "0.fbx", PivotMatrix))))
-		return E_FAIL;
 
-
-	
-
-
-	lstrcpy(m_szLoading, TEXT("로딩이 완료되었습니다.. "));
-	m_isFinished = true;
-
-	Safe_Release(pGameInstance);
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
-
 }
 
-HRESULT CLoader::Loading_ForGamePlayLevel()
+HRESULT CLoader::Loading_Lobby_Shader()
 {
-	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	Safe_AddRef(pGameInstance);
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Shader_VtxEffect",
+		CShader::Create(m_pDevice, m_pDeviceContext, L"../Bin/ShaderFiles/Shader_VtxEffect.hlsl", VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
 
-	lstrcpy(m_szLoading, TEXT("텍스쳐를 로드중입니다. "));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxInstance"),
+		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"), VTXINSTANCE_DECLARATION::Elements, VTXINSTANCE_DECLARATION::iNumElements))))
+		return E_FAIL;
 
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Lobby_Model()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_matrix PivotMatrix;
+	PivotMatrix = XMMatrixScaling(10.f, 10.f, 10.f);
+
+	// 이진화 이슈로 인해 주석처리
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Model_Effect1",
+	//	CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resources/Meshes/Effect/", "0.fbx", PivotMatrix))))
+	//	return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_Lobby_Component()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance100"),
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pDeviceContext, 100))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_PointInstance"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pDeviceContext, 50))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_GamePlay_Texture()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	/* For. Prototype_Component_Texture_Terrain */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_Texture_Terrain"),
@@ -183,31 +282,98 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Explosion/Explosion%d.png"), 90))))
 		return E_FAIL;
 
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_GamePlay_Object()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	
-
-	lstrcpy(m_szLoading, TEXT("모델을 로드중입니다. "));
-
-	/* For. Prototype_Component_VIBuffer_Terrain*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+	/* For.Prototype_GameObject_Terrain */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
+		CTerrain::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
 
-	/* For. Prototype_Component_VIBuffer_RectInstance */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance"),
-		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pDeviceContext, 10))))
+	/* For.Prototype_GameObject_Camera_Default */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Default"),
+		CCamera_Default::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
 
-	/* For. Prototype_Component_VIBuffer_PointInstance */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_PointInstance"),
-		CVIBuffer_Point_Instance::Create(m_pDevice, m_pDeviceContext, 50))))
+	/* For.Prototype_GameObject_Player */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
+		CAlphen::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
 
-	/* For. Prototype_Component_VIBuffer_Cube */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
-		CVIBuffer_Cube::Create(m_pDevice, m_pDeviceContext))))
+	/* For.Prototype_GameObject_Sword */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sword"),
+		CSword::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
 
+	// 이진화 이슈로 주석처리
+	///* For.Prototype_GameObject_Rect_Effect */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Rect_Effect"),
+	//	CRect_Effect::Create(m_pDevice, m_pDeviceContext))))
+	//	return E_FAIL;
 
+	///* For.Prototype_GameObject_Point_Effect */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Point_Effect"),
+	//	CPoint_Effect::Create(m_pDevice, m_pDeviceContext))))
+	//	return E_FAIL;
+
+	///* For.Prototype_GameObject_Effect */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
+	//	CEffect::Create(m_pDevice, m_pDeviceContext))))
+	//	return E_FAIL;
+
+	/* For.Prototype_GameObject_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
+		CSky::Create(m_pDevice, m_pDeviceContext))))
+		return E_FAIL;
+
+	///* For.Prototype_GameObject_UI */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UI"),
+	//	CUI::Create(m_pGraphic_Device))))
+	//	return E_FAIL;	
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_GamePlay_Shader()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	/* For. Prototype_Component_Shader_VtxNorTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Elements, VTXNORTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Shader_VtxAnim*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnim"),
+		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnim.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Shader_VtxCube */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
+		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE_DECLARATION::Elements, VTXCUBE_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Shader_VtxNonAnim*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxNonAnim"),
+		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxNonAnim.hlsl"), VTXNONANIMMODEL_DECLARATION::Elements, VTXNONANIMMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_GamePlay_Model()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	_matrix			PivotMatrix;
 
@@ -224,39 +390,42 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Fiona/", "Ari_Body.fbx", PivotMatrix))))
 		return E_FAIL;
 
-	///* For. Prototype_Component_VIBuffer_Cube */
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_GamePlay_Component()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	/* For. Prototype_Component_VIBuffer_Terrain*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_VIBuffer_RectInstance */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_RectInstance"),
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pDeviceContext, 10))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_VIBuffer_Cube */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pDeviceContext))))
+		return E_FAIL;
+	
+	/* For. Prototype_Component_VIBuffer_Cube */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_TUTORIAL, TEXT("Prototype_Component_VIBuffer_Cube"),
 	//	CVIBuffer_Cube::Create(m_pGraphic_Device))))
 	//	return E_FAIL;	 
 
-	lstrcpy(m_szLoading, TEXT("셰이더를 로드중입니다. "));	
-	/* For. Prototype_Component_Shader_VtxNorTex */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxNorTex"),
-		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Elements, VTXNORTEX_DECLARATION::iNumElements))))
-		return E_FAIL;
+	return S_OK;
+}
 
-	/* For. Prototype_Component_Shader_VtxAnim*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnim"),
-		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnim.hlsl"), VTXANIMMODEL_DECLARATION::Elements, VTXANIMMODEL_DECLARATION::iNumElements))))
-		return E_FAIL;
+HRESULT CLoader::Loading_GamePlay_Collider()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	/* For. Prototype_Component_Shader_VtxInstance*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxInstance"),
-		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"), VTXINSTANCE_DECLARATION::Elements, VTXINSTANCE_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-	/* For. Prototype_Component_Shader_VtxCube */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCube"),
-		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl"), VTXCUBE_DECLARATION::Elements, VTXCUBE_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-
-	/* For. Prototype_Component_Shader_VtxNonAnim*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxNonAnim"),
-		CShader::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/ShaderFiles/Shader_VtxNonAnim.hlsl"), VTXNONANIMMODEL_DECLARATION::Elements, VTXNONANIMMODEL_DECLARATION::iNumElements))))
-		return E_FAIL;
-
-	lstrcpy(m_szLoading, TEXT("콜라이더 생성중입니다. "));
 	/* For.Prototype_Component_Collider_AABB*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_AABB"),
 		CCollider::Create(m_pDevice, m_pDeviceContext, CCollider::TYPE_AABB))))
@@ -272,74 +441,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 		CCollider::Create(m_pDevice, m_pDeviceContext, CCollider::TYPE_SPHERE))))
 		return E_FAIL;
 
-	
+	RELEASE_INSTANCE(CGameInstance);
 
-
-
-	lstrcpy(m_szLoading, TEXT("게임오브젝트를 로드중입니다. "));
-
-	/* For.Prototype_GameObject_Terrain */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
-		CTerrain::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Camera_Default */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Default"),
-		CCamera_Default::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Player */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
-		CAlphen::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Sword */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sword"),
-		CSword::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Rect_Effect */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Rect_Effect"),
-		CRect_Effect::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Point_Effect */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Point_Effect"),
-		CPoint_Effect::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Sky */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
-		CSky::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Effect */
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
-		CEffect::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
-
-	///* For.Prototype_GameObject_UI */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UI"),
-	//	CUI::Create(m_pGraphic_Device))))
-	//	return E_FAIL;	
-
-	lstrcpy(m_szLoading, TEXT("로딩이 완료되었습니다.. "));
-	m_isFinished = true;
-
-	Safe_Release(pGameInstance);
-
-	return S_OK;
-}
-
-HRESULT CLoader::Loading_ForBoss1()
-{
-	return S_OK;
-}
-
-HRESULT CLoader::Loading_ForBoss2()
-{
 	return S_OK;
 }
 

@@ -208,6 +208,10 @@ HRESULT CAnimation::Ready_Channels(aiAnimation* pAIAnimation, vector<CHierarchyN
 			return E_FAIL;
 		}
 		pChannel->SetUp_HierarchyNodePtr(*iter);
+
+		// binary
+		pChannel->Set_RelatedIndex(distance(Nodes.begin(), iter));
+
 		m_Channels.push_back(pChannel);
 	}
 	return S_OK;
@@ -245,6 +249,10 @@ HRESULT CAnimation::Clone_Channels(aiAnimation* pAIAnimation, vector<CHierarchyN
 		}
 
 		pChannel->SetUp_HierarchyNodePtr(*iter);
+
+		// binary
+		pChannel->Set_RelatedIndex(distance(Nodes.begin(), iter));
+
 		Channels.push_back(pChannel);
 		Safe_Release(m_Channels[i]);
 	}
@@ -282,4 +290,144 @@ void CAnimation::Free()
 		Safe_Release(pChannel);
 	}
 	m_Channels.clear();
+}
+
+HRESULT CAnimation::Save_AnimationInfo(HANDLE & hFile)
+{
+	if (nullptr == hFile)
+		return E_FAIL;
+
+	DWORD		dwByte = 0;
+	DWORD		dwStrByte = 0;
+
+	// 애니메이션의 이름(m_szName) 저장
+	// 문자열의 사이즈 구하기
+	dwStrByte = strlen(m_szName) + 1;	// nullptr 을 위해 1개 추가
+
+										// 해당 문자열의 사이즈 저장
+	WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	// 문자열의 메모리를 문자열의 사이즈만큼 저장
+	WriteFile(hFile, m_szName, dwStrByte, &dwByte, nullptr);
+
+	// 지속시간, 스피드값 저장
+	WriteFile(hFile, &m_Duration, sizeof(_double), &dwByte, nullptr);
+	WriteFile(hFile, &m_TickPerSecond, sizeof(_double), &dwByte, nullptr);
+
+	// 채널의 갯수 저장
+	dwStrByte = m_Channels.size();
+	WriteFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	// 채널의 정보 저장
+	for (auto& Channel : m_Channels) {
+		Channel->Save_ChannelInfo(hFile);
+	}
+
+	return S_OK;
+}
+
+CAnimation * CAnimation::Create(HANDLE & hFile, vector<CHierarchyNode*> Nodes)
+{
+	CAnimation*	pInstance = new CAnimation();
+
+	if (FAILED(pInstance->NativeConstruct_Prototype(hFile, Nodes)))
+	{
+		MSG_BOX(TEXT("Failed to Created CAnimation"));
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+HRESULT CAnimation::NativeConstruct_Prototype(HANDLE & hFile, vector<class CHierarchyNode*> Nodes)
+{
+	if (nullptr == hFile)
+		return E_FAIL;
+
+	DWORD		dwByte = 0;
+	DWORD		dwStrByte = 0;
+
+	// 해당 문자열의 사이즈 불러오기
+	ReadFile(hFile, &dwStrByte, sizeof(DWORD), &dwByte, nullptr);
+
+	// 문자열의 메모리를 문자열의 사이즈만큼 읽기
+	ReadFile(hFile, m_szName, dwStrByte, &dwByte, nullptr);
+
+	ReadFile(hFile, &m_Duration, sizeof(_double), &dwByte, nullptr);
+	ReadFile(hFile, &m_TickPerSecond, sizeof(_double), &dwByte, nullptr);
+	ReadFile(hFile, &m_iNumChannels, sizeof(DWORD), &dwByte, nullptr);
+
+
+
+	for (int i = 0; i < m_iNumChannels; ++i) {
+		m_Channels.push_back(CChannel::Create(hFile));
+	}
+
+	for (int i = 0; i < m_iNumChannels; ++i) {
+		m_Channels[i]->SetUp_HierarchyNodePtr(Nodes[m_Channels[i]->Get_RelatedIndex()]);
+	}
+
+	return S_OK;
+}
+
+CAnimation * CAnimation::Clone(vector<CHierarchyNode*> Nodes)
+{
+	CAnimation*	pInstance = new CAnimation(*this);
+
+	if (FAILED(pInstance->NativeConstruct(Nodes)))
+	{
+		MSG_BOX(TEXT("Failed to Created CAnimation"));
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+HRESULT CAnimation::NativeConstruct(vector<class CHierarchyNode*> Nodes)
+{
+	if (FAILED(Clone_Dat_Channels(Nodes)))
+		return E_FAIL;
+
+	sort(m_Channels.begin(), m_Channels.end(), [](CChannel* pChannel1, CChannel* pChannel2) {
+		return pChannel1->Get_KeyFrames() > pChannel2->Get_KeyFrames();
+	});
+
+	m_pChannel_Root = *(m_Channels.begin());
+
+	return S_OK;
+}
+
+HRESULT CAnimation::Clone_Dat_Channels(vector<CHierarchyNode*> Nodes)
+{
+	vector<CChannel*>		Channels;
+
+	for (_uint i = 0; i < m_iNumChannels; ++i)
+	{
+		// 채널 복사
+		CChannel*			pChannel = m_Channels[i]->Clone();
+		if (nullptr == pChannel)
+			return E_FAIL;
+
+		// 채널과 관련된 상속노드 연결
+		if (0 != pChannel->Get_RelatedIndex())
+			pChannel->SetUp_HierarchyNodePtr(Nodes.at(pChannel->Get_RelatedIndex()));
+
+		// 채널 추가
+		Channels.push_back(pChannel);
+
+		if (!strcmp(pChannel->Get_Name(), "TransN"))
+		{
+			m_pMainChannel = pChannel;
+		}
+
+		Safe_Release(m_Channels[i]);
+	}
+
+	// 기존 채널 날리고
+	m_Channels.clear();
+
+	// 새로운 채널 넣기
+	m_Channels = Channels;
+
+	return S_OK;
 }

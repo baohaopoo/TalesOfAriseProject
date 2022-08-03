@@ -40,6 +40,32 @@ private:
 public:
 	static CHierarchyNode* Create(aiNode* pAINode, CHierarchyNode* pParent, _uint iDepth);
 	virtual void Free() override;
+
+
+
+
+	// binary
+public:
+	HRESULT SaveDatInfo(HANDLE& hFile);
+
+public:
+	void Set_HierarchyNumber(_uint iNumber) { m_iHierarchyNumber = iNumber; }	// 노드의 정보를 받아 자신의 부모로 설정하는 함수
+	_uint Get_HierarchyNumber(void) { return m_iHierarchyNumber; }				// 부모 노드의 정보를 가져오는 함수
+	CHierarchyNode* GetParent(void) { return m_pParent; }				// 부모 노드의 정보를 가져오는 함수
+	CHierarchyNode* SetParent(CHierarchyNode* pNode) { return m_pParent = pNode; }	// 부모 노드를 설정하는 함수
+
+	_uint Get_ParentIndex(void) { return m_iParentIndex; }
+	void Set_ParentIndex(_uint iIndex) { m_iParentIndex = iIndex; }
+
+	static CHierarchyNode* Create(const char* szName, _matrix TransformationMatrixTP, _uint iDepth);
+	virtual CHierarchyNode* Clone(void* pArg = nullptr);
+
+private:
+	_uint			m_iHierarchyNumber = 0;
+	_uint			m_iParentIndex = 0;
+
+private:
+	HRESULT NativeConstruct(const char * szName, _matrix TransformationMatrixTP, _uint iDepth);
 };
 
 END

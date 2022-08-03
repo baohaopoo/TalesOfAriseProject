@@ -40,6 +40,24 @@ public:
 	static CAnimation* Create(aiAnimation* pAIAnimation, vector<CHierarchyNode*> Nodes);
 	CAnimation* Clone(aiAnimation* pAIAnimation, vector<CHierarchyNode*> Nodes);
 	virtual void Free() override;
+
+
+	// binary
+public:
+	HRESULT Save_AnimationInfo(HANDLE& hFile);
+	static CAnimation* Create(HANDLE& hFile, vector<CHierarchyNode*> Nodes);
+	HRESULT NativeConstruct_Prototype(HANDLE& hFile, vector<class CHierarchyNode*> Nodes);
+
+public:
+	CAnimation* Clone(vector<CHierarchyNode*> Nodes);
+	HRESULT NativeConstruct(vector<class CHierarchyNode*> Nodes);
+	HRESULT Clone_Dat_Channels(vector<CHierarchyNode*> Nodes);
+
+public:
+	_uint Get_KeyFrame_RootChannel(void) { return m_pChannel_Root->Get_CurrentKeyFrameIndex(); }
+
+private:
+	class CChannel*						m_pChannel_Root = nullptr;
 };
 
 END
