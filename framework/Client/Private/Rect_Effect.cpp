@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\Public\Rect_Effect.h"
+#include "../Public/Rect_Effect.h"
 #include "GameInstance.h"
 #include "VIBuffer_Rect_Instance.h"
 

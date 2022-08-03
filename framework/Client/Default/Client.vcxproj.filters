@@ -43,9 +43,6 @@
     <Filter Include="02. GameObject\Effect\Point">
       <UniqueIdentifier>{a546c8c2-f850-47be-ab93-5d0945e6ba4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Effect\Rect">
-      <UniqueIdentifier>{f01a0087-7760-4850-bc54-e578ae924aee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\Sky">
       <UniqueIdentifier>{1592187e-c3ad-493d-9c4d-2eceda0e6dda}</UniqueIdentifier>
     </Filter>
@@ -57,15 +54,6 @@
     </Filter>
     <Filter Include="02. GameObject\UI">
       <UniqueIdentifier>{e8e35053-d437-46bb-a356-4c70940c762f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Imgui">
-      <UniqueIdentifier>{310ab948-1a77-42dc-a460-01c70a0643bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Imgui\etc">
-      <UniqueIdentifier>{c6595471-8e18-4ffc-b293-5a60b66c653a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96.Imgui\Manager">
-      <UniqueIdentifier>{37177f39-808a-4e80-aca4-d08b847a7486}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Levels\03. Tutorial">
       <UniqueIdentifier>{1ecb7871-83a4-41c8-b36d-f8e2d0e0907c}</UniqueIdentifier>
@@ -105,6 +93,18 @@
     </Filter>
     <Filter Include="02. GameObject\Effect\Mesh">
       <UniqueIdentifier>{3197c0f0-f4c4-499b-8605-804e8da9460d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Imgui">
+      <UniqueIdentifier>{310ab948-1a77-42dc-a460-01c70a0643bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Imgui\etc">
+      <UniqueIdentifier>{c6595471-8e18-4ffc-b293-5a60b66c653a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Imgui\Manager">
+      <UniqueIdentifier>{37177f39-808a-4e80-aca4-d08b847a7486}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\Effect\Rect">
+      <UniqueIdentifier>{f01a0087-7760-4850-bc54-e578ae924aee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,31 +166,31 @@
       <Filter>02. GameObject\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ImGui_Manager.h">
-      <Filter>96.Imgui\Manager</Filter>
+      <Filter>96. Imgui\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imconfig.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imgui.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imgui_impl_dx11.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imgui_impl_win32.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imgui_internal.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imstb_rectpack.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imstb_textedit.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imstb_truetype.h">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Lobby.h">
       <Filter>01. Levels\02. Lobby</Filter>
@@ -273,28 +273,28 @@
       <Filter>02. GameObject\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ImGui_Manager.cpp">
-      <Filter>96.Imgui\Manager</Filter>
+      <Filter>96. Imgui\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui_demo.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui_draw.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui_impl_dx11.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui_impl_win32.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui_tables.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui_widgets.cpp">
-      <Filter>96.Imgui\etc</Filter>
+      <Filter>96. Imgui\etc</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Lobby.cpp">
       <Filter>01. Levels\02. Lobby</Filter>

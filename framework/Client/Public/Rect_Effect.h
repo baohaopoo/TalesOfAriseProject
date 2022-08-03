@@ -1,7 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
 #include "GameObject.h"
-#include "VIBuffer_Rect_Instance.h"
 
 BEGIN(Engine)
 class CShader;
