@@ -103,6 +103,9 @@
     <Filter Include="02. GameObject\Eqiupment\Sword">
       <UniqueIdentifier>{a80fca95-0e15-409e-b535-6f938172aae4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Effect\Mesh">
+      <UniqueIdentifier>{3197c0f0-f4c4-499b-8605-804e8da9460d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -216,6 +219,9 @@
     <ClInclude Include="..\public\Equipment.h">
       <Filter>02. GameObject\Eqiupment</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Mesh_Effect.h">
+      <Filter>02. GameObject\Effect\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -314,6 +320,9 @@
     <ClCompile Include="..\private\Equipment.cpp">
       <Filter>02. GameObject\Eqiupment</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Mesh_Effect.cpp">
+      <Filter>02. GameObject\Effect\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -345,6 +354,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNonAnim.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxEffect.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
