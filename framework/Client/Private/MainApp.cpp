@@ -45,11 +45,25 @@ HRESULT CMainApp::NativeConstruct()
 		return E_FAIL;
 	}
 
+	if (FAILED(Ready_Prototype_Texture_UI()))
+	{
+		MSG_BOX(L"Failed To CMainApp : NativeConstruct : Ready_Prototype_Texture_UI()");
+		return E_FAIL;
+	}
+
+	if (FAILED(Ready_Prototype_GameObject_UI()))
+	{
+		MSG_BOX(L"Failed To CMainApp : NativeConstruct : Ready_Prototype_GameObject_UI()");
+		return E_FAIL;
+	}
+
 	if (FAILED(Ready_Prototype_GameObject()))
 	{
 		MSG_BOX(L"Failed To CMainApp : NativeConstruct : Ready_Prototype_GameObject()");
 		return E_FAIL;
 	}
+
+
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 	{
@@ -165,10 +179,7 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelIndex)
 
 HRESULT CMainApp::Ready_Prototype_GameObject()
 {
-	/* For.Prototype_GameObject_BackGround */
-	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
-		CBackGround::Create(m_pDevice, m_pDeviceContext))))
-		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -190,10 +201,6 @@ HRESULT CMainApp::Ready_Prototype_Component()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_Default */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"),
-		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Default%d.dds"), 2))))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -206,7 +213,41 @@ HRESULT CMainApp::Ready_Fonts()
 	if (FAILED(m_pGameInstance->Add_Fonts(m_pDevice, m_pDeviceContext, TEXT("Font_MS"), TEXT("../Bin/Resources/Fonts/125.spritefont"))))
 		return E_FAIL;
 
+
+	//if (FAILED(m_pGameInstance->Add_Fonts(m_pDevice, m_pDeviceContext, TEXT("Font_Javan20"), TEXT("../Bin/Resources/Fonts/Javanese20.spritefont"))))
+	//{
+	//	MSG_BOX(TEXT("Failed to Load Font"));
+	//	return E_FAIL;
+	//}
+
+
 	// MS.spritefont
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Prototype_GameObject_UI()
+{	
+	
+	/* For.Prototype_GameObject_BackGround */
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
+		CBackGround::Create(m_pDevice, m_pDeviceContext))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Prototype_Texture_UI()
+{
+
+	/* For.Prototype_Component_Texture_Default */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
+		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/UI/Logo%d.dds"),3))))
+		return E_FAIL;
+
+
+
+
+
 	return S_OK;
 }
 

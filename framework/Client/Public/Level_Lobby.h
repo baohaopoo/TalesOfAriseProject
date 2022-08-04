@@ -21,11 +21,14 @@ public:
 
 public:
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
+	HRESULT Ready_Fonts();
 
 public:
 	static CLevel_Lobby* Create(ID3D11Device* pDeviceOut, ID3D11DeviceContext* pDeviceContextOut);
 	virtual void Free() override;
-
+private:
+	_tchar UIMsg[MAX_PATH] = TEXT("");
+	_tchar ExitMsg[MAX_PATH] = TEXT("");
 private:
 	bool mCol = false;
 	bool mExitCol = false;

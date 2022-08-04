@@ -6,7 +6,7 @@
 #include "Level_Lobby.h"
 #include "Level_Tutorial.h"
 #include "Loader.h"
-
+#include "BackGround.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: CLevel(pDevice, pDeviceContext)
@@ -25,6 +25,21 @@ HRESULT CLevel_Loading::NativeConstruct(LEVEL eNextLevel)
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
+	if (FAILED(Ready_Fonts()))
+	{
+		MSG_BOX(L"Failed To CMainApp : NativeConstruct : Ready_Fonts()");
+		return E_FAIL;
+	}
+
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	{
+		MSG_BOX(L"Failed To CMainApp : NativeConstruct : Ready_Layer_BackGround()");
+		return E_FAIL;
+	
+	}
+		
+
+
 	return S_OK;
 }
 
@@ -38,7 +53,7 @@ void CLevel_Loading::Tick(_double TimeDelta)
 
 	if (true == m_pLoader->Get_Finished())
 	{
-		if (GetKeyState(VK_SPACE) & 0x8000)
+
 		{
 			CLevel*		pLevel = nullptr;
 
@@ -55,14 +70,22 @@ void CLevel_Loading::Tick(_double TimeDelta)
 			if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pLevel)))
 				goto Finish;
 		}
+
+
+	Finish:
+		Safe_Release(pGameInstance);
 	}
-
-Finish:
-	Safe_Release(pGameInstance);
 }
-
 HRESULT CLevel_Loading::Render()
 {
+
+
+	CGameInstance*		pGameInstance = CGameInstance::GetInstance();
+
+	Safe_AddRef(pGameInstance);
+
+
+
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
@@ -73,8 +96,65 @@ HRESULT CLevel_Loading::Render()
 
 	SetWindowText(g_hWnd, szText);
 
+
+	wsprintf(LoadingMsg, TEXT("Now Loading.."));
+	if (FAILED(pGameInstance->Render_Fonts(TEXT("Font_Javan40"), LoadingMsg, _float2(g_iWinCX /2 + 650, g_iWinCY / 2  + 380), XMVectorSet(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
+	Safe_Release(pGameInstance);
+
 	return S_OK;
 }
+
+HRESULT CLevel_Loading::Ready_Layer_BackGround(const _tchar * pLayerTag)
+{
+	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	CBackGround::BACKDESC backdesc;	
+	backdesc.kind = 2;
+
+	// 스프라이트 넣자.
+	if (nullptr == pGameInstance->Add_GameObjectToLayer(LEVEL_LOADING, pLayerTag, TEXT("Prototype_GameObject_BackGround"), &backdesc))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Fonts()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+
+	if (nullptr == pGameInstance)
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Fonts(m_pDevice, m_pDeviceContext, TEXT("Font_Javan40"), TEXT("../Bin/Resources/Fonts/Javanese20.spritefont"))))
+	{
+
+		
+		MSG_BOX(TEXT("Failed to Load Font"));
+		return E_FAIL;
+	}
+
+
+	if (FAILED(pGameInstance->Add_Fonts(m_pDevice, m_pDeviceContext, TEXT("Font_Javan10"), TEXT("../Bin/Resources/Fonts/Javanese10.spritefont"))))
+	{
+
+
+		MSG_BOX(TEXT("Failed to Load Font"));
+		return E_FAIL;
+	}
+
+
+	pGameInstance->Release();
+	return S_OK;
+}
+
+
 
 CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDeviceOut, ID3D11DeviceContext* pDeviceContextOut, LEVEL eNextLevel)
 {

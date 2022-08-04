@@ -48,6 +48,12 @@ public:
 	HRESULT Ready_Fonts();
 
 public:
+	//UI 관련 메서드
+	HRESULT Ready_Prototype_GameObject_UI();
+	HRESULT Ready_Prototype_Texture_UI();
+
+
+public:
 	static CMainApp* Create();
 	virtual void Free() override;
 };

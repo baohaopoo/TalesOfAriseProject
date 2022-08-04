@@ -31,16 +31,23 @@ HRESULT CBackGround::NativeConstruct(void * pArg)
 
 	if (FAILED(__super::NativeConstruct(pArg, &TransformDesc)))
 		return E_FAIL;
-
+	if (pArg != nullptr)
+	{
+		m_tUIInfo = *(BACKDESC*)pArg;
+	}
+	UIKind = ((BACKDESC*)pArg)->kind;
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_fX = g_iWinCX * 0.5f;
-	m_fY = g_iWinCY * 0.5f;
 
-	m_fSizeX = g_iWinCX;
-	m_fSizeY = g_iWinCY;
+	m_tUIInfo.m_fX = g_iWinCX / 2;
+	m_tUIInfo.m_fY = g_iWinCY / 2;
+	m_tUIInfo.m_fSizeX = g_iWinCX;
+	m_tUIInfo.m_fSizeY = g_iWinCY;
 
+
+	m_iShaderPass = 4;
+	
 	return S_OK;
 }
 
@@ -48,10 +55,45 @@ void CBackGround::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
+	if (UIKind == 0)
+	{
+		//logo tex
+		m_iSprite = 0;
+	}
+	if (UIKind == 1)
+	{
+		//lobby tex
+		m_iSprite = 1;
+	}
+	if (UIKind == 2)
+	{
+		//black tex (loading tex)
+		m_iSprite = 2;
+	}
 
-	m_pTransformCom->Scaled(_float3(m_fSizeX, m_fSizeY, 1.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - g_iWinCX * 0.5f, -m_fY + g_iWinCY * 0.5f, 0.f, 1.f));
 
+	m_pTransformCom->Scaled(_float3(m_tUIInfo.m_fSizeX, m_tUIInfo.m_fSizeY, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_tUIInfo.m_fX - g_iWinCX * 0.5f, -m_tUIInfo.m_fY + g_iWinCY * 0.5f, 0.f, 1.f));
+	CGameInstance* pGameInstnace = CGameInstance::GetInstance();
+	if (m_isChangeCut)
+	{
+		/*m_iSprite = 1;*/
+	}
+	if (!m_isFirst)
+		rgb += 0.008f;
+
+	if (rgb > 1) {
+		rgb = 1;
+		m_isFirst = true;
+
+	}
+
+	if (pGameInstnace->Key_Down(DIK_SPACE))
+	{
+		m_isFirst = false;
+
+
+	}
 }
 
 void CBackGround::LateTick(_double TimeDelta)
@@ -67,6 +109,8 @@ HRESULT CBackGround::Render()
 	if (nullptr == m_pShaderCom || 
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;
+
+
 
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -85,10 +129,17 @@ HRESULT CBackGround::Render()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &ProjMatrixTP, sizeof(_float4x4))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->SetUp_ShaderResourceView(m_pShaderCom, "g_Texture", 0)))
+
+	//m_iSprite에 해당하는 부분.
+	if (FAILED(m_pTextureCom->SetUp_ShaderResourceView(m_pShaderCom, "g_Texture", m_iSprite)))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Begin(0)))
+	if (FAILED(m_pShaderCom->Set_RawValue("alphargb", &rgb, sizeof(float))))
+		return E_FAIL;
+
+
+
+	if (FAILED(m_pShaderCom->Begin(m_iShaderPass)))
 		return E_FAIL;
 	
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -112,7 +163,7 @@ HRESULT CBackGround::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::SetUp_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_Default"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::SetUp_Components(TEXT("Com_Texture"), LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	return S_OK;

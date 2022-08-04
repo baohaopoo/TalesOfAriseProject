@@ -12,6 +12,7 @@
 #include "Point_Effect.h"
 #include "Effect.h"
 #include "Mesh_Effect.h"
+#include "BackGround.h"
 
 CLoader::CLoader(ID3D11Device* pDeviceOut, ID3D11DeviceContext* pDeviceContextOut)
 	: m_pDevice(pDeviceOut), m_pDeviceContext(pDeviceContextOut)
@@ -165,6 +166,12 @@ HRESULT CLoader::Loading_Lobby_Texture()
 		CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/Effect/Mesh/Mesh(%d).png"), 369))))
 		return E_FAIL;
 
+
+	///* For.Prototype_Component_Texture_Default */
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_BackGround"),
+	//	CTexture::Create(m_pDevice, m_pDeviceContext, TEXT("../Bin/Resources/Textures/UI/Logo%d.dds"), 2))))
+	//	return E_FAIL;
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
@@ -187,10 +194,17 @@ HRESULT CLoader::Loading_Lobby_Object()
 		CPoint_Effect::Create(m_pDevice, m_pDeviceContext))))
 		return E_FAIL;
 
+
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_LobbyBackGround"),
+	//	CBackGround::Create(m_pDevice, m_pDeviceContext))))
+	//	return E_FAIL;
+
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
+
 
 HRESULT CLoader::Loading_Lobby_Shader()
 {

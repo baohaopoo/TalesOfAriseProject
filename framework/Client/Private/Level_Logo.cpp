@@ -3,7 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
-
+#include"BackGround.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: CLevel(pDevice, pDeviceContext)
@@ -30,7 +30,7 @@ void CLevel_Logo::Tick(_double TimeDelta)
 
 	Safe_AddRef(pGameInstance);
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (GetKeyState(VK_TAB) & 0x8000)
 	{
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pDeviceContext, LEVEL_LOBBY))))
 			return;
@@ -54,7 +54,11 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
 	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);	
 
-	if (nullptr == pGameInstance->Add_GameObjectToLayer(LEVEL_LOGO, pLayerTag, TEXT("Prototype_GameObject_BackGround")))
+
+	CBackGround::BACKDESC backdesc;
+	backdesc.kind = 0;
+
+	if (nullptr == pGameInstance->Add_GameObjectToLayer(LEVEL_LOGO, pLayerTag, TEXT("Prototype_GameObject_BackGround"),&backdesc))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
