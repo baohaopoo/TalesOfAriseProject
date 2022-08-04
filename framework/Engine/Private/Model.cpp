@@ -593,7 +593,8 @@ HRESULT CModel::Save_FBX(HANDLE& hFile)
 	// TYPE_ANIM : 초기 필요한 정보 + Indices + Vertices + 애니메이션의 채널정보(키프레임)
 	for (int i = 0; i < m_MeshContainers.size(); ++i) {
 		// TYPE_NONANIM 일 경우
-		if (TYPE_NONANIM == m_eType) {
+		if (TYPE_NONANIM == m_eType ||
+			TYPE_EFFECT == m_eType) {
 			// Vertices 저장
 			m_MeshContainers[i]->Save_VertexBuffer_NoAnim(hFile, m_pScene->mMeshes[i]);
 		}

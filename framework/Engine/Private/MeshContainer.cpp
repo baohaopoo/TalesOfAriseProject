@@ -519,7 +519,8 @@ HRESULT CMeshContainer::NativeConstruct_Prototype(CModel::TYPE eType, HANDLE & h
 	m_eType = eType;
 	m_PivotMatrix = PivotMatrix;
 
-	if (CModel::TYPE_NONANIM == m_eType) {
+	if (CModel::TYPE_NONANIM == m_eType || 
+		CModel::TYPE_EFFECT == m_eType) {
 		Load_VertexBuffer_NonAnim(hFile);
 	}
 	else if (CModel::TYPE_ANIM == m_eType) {
@@ -548,7 +549,8 @@ HRESULT CMeshContainer::NativeConstruct_Dat(void * pArg)
 {
 	vector<CHierarchyNode*>		HierarchyNodes = *(vector<CHierarchyNode*>*)pArg;
 
-	if (CModel::TYPE_NONANIM == m_eType)
+	if (CModel::TYPE_NONANIM == m_eType ||
+		CModel::TYPE_EFFECT == m_eType)
 		return S_OK;
 
 	if (0 == m_iNumBones)

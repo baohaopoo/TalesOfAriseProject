@@ -57,11 +57,12 @@ HRESULT CMainApp::NativeConstruct()
 		return E_FAIL;
 	}
 #ifdef _DEBUG
-	if (FAILED(m_pGameInstance->Init_Console_Debug(true)))
-	{
-		MSG_BOX(L"Failed To CMainApp : NativeConstruct : m_pGameInstance->Init_Console_Debug");
-		return E_FAIL;
-	}
+	// 콘솔 디버그 창 출력
+	//if (FAILED(m_pGameInstance->Init_Console_Debug(true)))
+	//{
+	//	MSG_BOX(L"Failed To CMainApp : NativeConstruct : m_pGameInstance->Init_Console_Debug");
+	//	return E_FAIL;
+	//}
 
 	//if (FAILED(Init_Imgui()))
 	//{

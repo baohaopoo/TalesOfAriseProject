@@ -217,9 +217,9 @@ HRESULT CLoader::Loading_Lobby_Model()
 	PivotMatrix = XMMatrixScaling(10.f, 10.f, 10.f);
 
 	// 이진화 이슈로 인해 주석처리
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Model_Effect1",
-	//	CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resources/Meshes/Effect/", "0.fbx", PivotMatrix))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, L"Prototype_Component_Model_Effect1",
+		CModel::Create(m_pDevice, m_pDeviceContext, CModel::TYPE_EFFECT, "../Bin/Resources/Meshes/Effect/", "0.fbx", PivotMatrix))))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 
