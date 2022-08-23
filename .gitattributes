@@ -1,1 +1,5 @@
 Ari_body.fbx filter=lfs diff=lfs merge=lfs -text
+Map_GrandYork_Battle04.dat filter=lfs diff=lfs merge=lfs -text
+AncientMountain_Normal.dds filter=lfs diff=lfs merge=lfs -text
+Map_GrandYork_Battle02.dat filter=lfs diff=lfs merge=lfs -text
+Map_GrandYork_MapMesh.dat filter=lfs diff=lfs merge=lfs -text
