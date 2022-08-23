@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="99.Header">
+      <UniqueIdentifier>{050bfdf5-1ac6-41c2-90ab-de0966752312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Default">
+      <UniqueIdentifier>{287e453a-4d74-4805-a9da-69b462b8e5e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Public\Converter_Define.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Private\Converter.cpp">
+      <Filter>98.Default</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

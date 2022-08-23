@@ -1,0 +1,31 @@
+"Stage 01. GrandYork Town", 
+"Stage 02. Storage", 
+"Stage 03. Boss Balseph", 
+"Stage 04. Fire Avatar",
+"Stage 05. Cave_01",
+"Stage 06. Cave_05",
+"Stage 07. Cave_07",
+"Stage 08. GrandYork_Battle_02",
+"Stage 09. GrandYork_Battle_04"
+
+
+-75.31, 19.25, 0.02		// 바셀로프 보스
+
+35.91, 3.84, 0.37		// 바셀로프 입구
+
+-91.22, 2.42, 0.32		// 불의 화신
+
+2.355570f, ?, 59.2869f	// Tutorial 시작
+352.51f, ?, -242.93f		// Tutorial 전투
+
+전투맵은 0.f, 0.f, 0.f
+
+
+Prototype_Component_Navigation_Map_Tutorial
+Prototype_Component_Navigation_Map_BalsephEnterance
+Prototype_Component_Navigation_Map_Balseph
+Prototype_Component_Navigation_Map_FireAvatar
+Prototype_Component_Navigation_Map_GrandYork_Battle_02
+Prototype_Component_Navigation_Map_GrandYork_Battle_04
+
+

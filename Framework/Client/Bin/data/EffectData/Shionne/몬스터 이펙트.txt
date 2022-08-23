@@ -1,0 +1,69 @@
+파티클
+1. boar - 피격 파티클
+2. mantis - 유도1
+3. lord_balseph - 폭팔 잔해
+4. lord_balseph - 도끼 끌 때
+4. lord_balseph - 불똥 날리기 (전방위)
+4. lord_balseph - 불똥 날리기 (앞으로)
+
+4. fire_avatar
+
+메쉬
+1. boar - 일반 공격
+
+2. boar - 돌진1
+3. boar - 돌진2
+4. boar - 돌진3
+
+5. mantis - 베기1(빨강)
+6. mantis - 내려베기2(하양)
+
+7. mantis - 폭파1
+8. mantis - 폭파2
+9. mantis - 폭파3
+10. mantis - 폭파4
+
+11. mantis - 유도1
+
+12. punisher - 클로(빨강)
+
+13. punisher - 클로(초록)
+
+14. punisher - 트리플 클로1(빨강)
+
+15. punisher - 트리플 클로2(빨강)
+
+16. punisher - 싱글 클로1(빨강)
+
+17. punisher - 헥사 클로(빨강)
+
+18. lord_balseph - (원형폭발)평면 폭발(노랑)
+19. lord_balseph - (원형폭발)고리 폭발(빨강)
+20. lord_balseph - (원형폭발)고리 폭발(빨강)
+21. lord_balseph - (원형폭발)고리 폭발(빨강)
+22. lord_balseph - (원형폭발)원형 폭발(빨강)
+
+23. lord_balseph - (내려찍기)반구 폭발(빨강)
+24. lord_balseph - (내려찍기)고리 폭발(빨강)
+25. lord_balseph - (내려찍기)반구 작은 폭발(빨강)
+
+26. lord_balseph - (회전베기)고리 (빨강)
+27. lord_balseph - (회전베기)고리 (빨강)
+28. lord_balseph - (회전베기)고리 (빨강)
+
+29. lord_balseph - (앞으로올려치기)폭발1 (빨강)
+30. lord_balseph - (앞으로올려치기)폭발2 (빨강)
+31. lord_balseph - (앞으로올려치기)폭발3 (빨강)
+
+32. fire_avatar - (앞으로올려치기)폭발2 (빨강)
+33. fire_avatar - (앞으로올려치기)폭발3 (빨강)
+
+boar
+mantis
+punisher
+lord_balseph
+fire_avatarㄴ
+
+메쉬
+207 소톱 3개
+377
